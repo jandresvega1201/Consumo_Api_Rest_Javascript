@@ -2,9 +2,10 @@
 //y cunado se hace una peticion con axios se hace accede . data y ya viene comvertida en json
 
 
-const API_URL_RANDOMS = 'https://api.thecatapi.com/v1/images/search?limit=3&?api_key=207246b5-a7b1-4b0a-84c3-6ff263ae307d'
-const API_URL_FAVORITES = 'https://api.thecatapi.com/v1/favourites?api_key=207246b5-a7b1-4b0a-84c3-6ff263ae307d'
-const API_URL_FAVORITES_DELETE = (id) => `https://api.thecatapi.com/v1/favourites/${id}?api_key=207246b5-a7b1-4b0a-84c3-6ff263ae307d`
+const API_URL_RANDOMS = 'https://api.thecatapi.com/v1/images/search?limit=3'
+const API_URL_FAVORITES = 'https://api.thecatapi.com/v1/favourites?api_key='
+const API_URL_UPLOAD = 'https://api.thecatapi.com/v1/images/upload?api_key='
+const API_URL_FAVORITES_DELETE = (id) => `https://api.thecatapi.com/v1/favourites/${id}?api_key=`
 
 const spanError = document.getElementById('error')
 
@@ -40,11 +41,15 @@ async function getCatRandom() {
         btn3.onclick = () => saveFavorites(data1[2].id)
 
     }
-    console.log(data1)
 }
 
 async function favoritesCats() {
-    const res = await fetch(API_URL_FAVORITES)
+    const res = await fetch(API_URL_FAVORITES, {
+        method: 'GET',
+        headers: {
+            'X-API-KEY': '207246b5-a7b1-4b0a-84c3-6ff263ae307d'
+        }
+    })
     const data2 = await res.json()
     if(res.status !== 200) {
         spanError.innerHTML = "hubo un error " + res.status
@@ -72,7 +77,6 @@ async function favoritesCats() {
 
         })
     }
-    console.log(data2)
 }
 
 async function saveFavorites(id) {
@@ -80,7 +84,8 @@ async function saveFavorites(id) {
     const res = await fetch(API_URL_FAVORITES, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-API-KEY': '207246b5-a7b1-4b0a-84c3-6ff263ae307d'
         },
         body: JSON.stringify({
             image_id: id
@@ -96,9 +101,13 @@ async function saveFavorites(id) {
     console.log('save')
     console.log(data3)
 }
+
 async function deleteFavorite(id) {
     const res1 = await fetch(API_URL_FAVORITES_DELETE(id), {
         method: 'DELETE',
+        headers: {
+            'X-API-KEY': '207246b5-a7b1-4b0a-84c3-6ff263ae307d'
+        }
 
     })
     const data4 = await res1.json()
@@ -111,6 +120,31 @@ async function deleteFavorite(id) {
     }
     console.log('save')
     console.log(data4)
+}
+
+async function uploadGato() {
+    const form = document.getElementById('form')
+    const formData = new FormData(form)
+    console.log(formData.get('file'))
+
+    const res = await fetch(API_URL_UPLOAD, {
+        method: 'POST',
+        headers: {
+            // 'Content-Type': 'multipart/form-data',
+            'X-API-KEY': '207246b5-a7b1-4b0a-84c3-6ff263ae307d'
+        },
+        body: formData
+    })
+
+    const data = await res.json()
+    console.log(data)
+    if(res.status !== 201) {
+        spanError.innerHTML = "hubo un error " + res.status + data.message
+    }else  {
+        console.log('fot de gato subida')
+        favoritesCats()
+
+    }
 }
 getCatRandom()
 favoritesCats()
