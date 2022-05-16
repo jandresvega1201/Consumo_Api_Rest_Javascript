@@ -9,11 +9,30 @@
     <title>Consumo Api</title>
 </head>
 <body>
-<div>
     <h1>Gatitco al Azar</h1>
-    <img alt="imagen de gatico" src=""/>
-    <button>Cargar</button>
-</div>
+    <span id="error"></span>
+    <section id="randonCats">
+        <article>
+            <img id="img1" alt="imagen de gatico random" src=""/>
+            <button id="btn1" >agregar a fovorito</button>
+        </article>
+        <article>
+            <img id="img2" alt="imagen de gatico random" src=""/>
+            <button id="btn2" >agregar a fovorito</button>
+        </article>
+        <article>
+            <img id="img3" alt="imagen de gatico random" src=""/>
+            <button id="btn3">agregar a fovorito</button>
+        </article>
+        <button onclick="getCatRandom()" id="btn-cargar">Cargar</button>
+    </section>
+    <section id="catsFavorites">
+        <h2>gaticos favoritos</h2>
+        <article>
+            <img  alt="foto favorite"/>
+            <button id="btn-delete">sacar cat de favorito</button>
+        </article>
+    </section>
 <script src="./main.js"></script>
 
 </body>
